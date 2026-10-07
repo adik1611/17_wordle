@@ -1,13 +1,21 @@
 def evaluate(target, guess):
-
-    # occurrence, producing incorrect duplicate-letter feedback.
     result = ["gray"] * len(guess)
+    remaining = {}
+
+    for ch in target:
+        remaining[ch] = remaining.get(ch, 0) + 1
+
     for i, ch in enumerate(guess):
         if ch == target[i]:
             result[i] = "green"
+            remaining[ch] -= 1
+
     for i, ch in enumerate(guess):
         if result[i] == "green":
             continue
-        if ch in target:
+
+        if remaining.get(ch, 0) > 0:
             result[i] = "yellow"
+            remaining[ch] -= 1
+
     return result
